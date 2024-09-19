@@ -1,0 +1,25 @@
+Description: mdevctl is already installed
+ dh-cargo is smart, so smart that it already moved the main
+ mdevctl binary by the time the extra Makefile that upstream
+ generates will run.
+ Remove that line from Makefile.in to avoid failing on the
+ binary already being gone.
+Forwarded: no
+X-Not-Forwarded-Reason: effect of dh-cargo, distro only
+Author: Christian Ehrhardt <christian.ehrhardt@canonical.com>
+Last-Update: 2024-02-06
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -43,8 +43,10 @@
+ 	mkdir -p $(DESTDIR)$(UDEVDIR)/rules.d/
+ 	install -m 644 60-mdevctl.rules $(DESTDIR)$(UDEVDIR)/rules.d/
+ 	mkdir -p $(DESTDIR)$(SBINDIR)
+-	install -m 755 @@mdevctl@@ $(DESTDIR)$(SBINDIR)/
+-	ln -sf mdevctl $(DESTDIR)$(SBINDIR)/lsmdev
++	# mdevctl binary is already installed by dh_cargo
++	# install -m 755 @@mdevctl@@ $(DESTDIR)$(SBINDIR)/
++	# Furthermore this (read actions) is useful for non-root -> bin
++	ln -sf mdevctl $(DESTDIR)$(PREFIX)/bin/lsmdev
+ 	mkdir -p $(DESTDIR)$(MANDIR)/man8
+ 	install -m 644 @@outdir@@/mdevctl.8 $(DESTDIR)$(MANDIR)/man8/
+ 	ln -sf mdevctl.8  $(DESTDIR)$(MANDIR)/man8/lsmdev.8

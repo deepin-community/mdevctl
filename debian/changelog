@@ -1,5 +1,213 @@
-template-repository (1.0-1) unstable; urgency=medium
+mdevctl (1.3.0-2.1) unstable; urgency=medium
 
-  * Initial release
+  * Non-maintainer upload.
+  * Relax cargo dev-dependency on nix crate and explicitly enable the
+    "process" feature for compatibility with nix 0.27. (Closes: #1064552)
 
- -- Tsic404 <liuheng@deepin.org>  Sat, 28 Jan 2023 13:46:49 +0800
+ -- Peter Michael Green <plugwash@debian.org>  Thu, 02 May 2024 16:42:16 +0000
+
+mdevctl (1.3.0-2) unstable; urgency=medium
+
+  * d/control:
+    - bump env_logger B-D version (Closes: #1068941)
+    - bump Standards-Version to 4.7.0
+
+ -- Athos Ribeiro <athos.ribeiro@canonical.com>  Tue, 16 Apr 2024 10:59:16 -0300
+
+mdevctl (1.3.0-1) unstable; urgency=medium
+
+  * New upstream version 1.3.0
+  * d/p/Update-uuid-version.patch: remove patch applied upstream
+  * d/p/move-tempfile-to-dev-dependencies.patch: remove patch applied upstream
+  * d/patches: refresh patches
+  * d/control: adjust dependencies for new release
+  * d/p/lower-versions-for-unstable.patch: remove clap adjustments. Upstream
+    now uses clap v4, which is the current version in Debian
+  * d/control: replace pkg-config with pkgconf. The former is just a
+    transitional package for the latter. Using it triggers a lintian warning
+
+ -- Athos Ribeiro <athos.ribeiro@canonical.com>  Tue, 06 Feb 2024 12:06:52 -0300
+
+mdevctl (1.2.0-7) unstable; urgency=medium
+
+  [ Athos Ribeiro ]
+  * d/control: switch systemd/udev B-Ds to systemd-dev
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 08 Jan 2024 08:45:28 +0100
+
+mdevctl (1.2.0-6) unstable; urgency=medium
+
+  [ Athos Ribeiro ]
+  * d/p/move-tempfile-to-dev-dependencies.patch: fix build with nocheck
+    (Closes: #1059036)
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 04 Jan 2024 09:41:37 +0100
+
+mdevctl (1.2.0-5) unstable; urgency=medium
+
+  [ Athos Ribeiro ]
+  * d/control: pin env_logger B-D required version (Closes: 1054157)
+
+  [ Christian Ehrhardt ]
+  * d/control: Add Athos Ribeiro to uploaders - Thank you for all the great
+    contributions so far!
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 23 Oct 2023 10:21:00 +0200
+
+mdevctl (1.2.0-4) unstable; urgency=medium
+
+  [ Athos Ribeiro ]
+  * d/control: bump Standards-Version to 4.6.2 (no changes needed)
+  * d/patches: adjust env_logger dependency version (Closes: #1050521)
+  * d/rules: run test suite during package build
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Mon, 04 Sep 2023 16:46:19 +0200
+
+mdevctl (1.2.0-3) unstable; urgency=medium
+
+  [ Peter Michael Green ]
+  * Update Debian dependencies on clap related packages to reflrect cargo
+    dependencies (Closes: #1028655). Thanks to Peter Micheal Green for
+    the report and suggested changes.
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 19 Jan 2023 13:37:16 +0100
+
+mdevctl (1.2.0-2) unstable; urgency=medium
+
+  [ Christian Ehrhardt ]
+  * Update uuid version to 1.0 (Closes: #1017369)
+    Thanks to Peter Micheal Green for the report, taking the upstream
+    accepted commit landed by Athos Ribeiro to solve this.
+    - d/p/Update-uuid-version.patch new patch from upstream to work with
+      uuid 1.0
+    - d/p/lower-versions-for-unstable.patch: updated as we no more need to
+      lower uuid
+
+  [ Peter Micheal Green ]
+  * d/control: switch uuid dependency to librust-uuid-1+v4-dev
+  * d/rules: Fix clean target
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 06 Sep 2022 10:25:20 +0200
+
+mdevctl (1.2.0-1) unstable; urgency=medium
+
+  [ Athos Ribeiro ]
+  * Update Standards-Version (no changes needed)
+  * d/copyright: update packaging copyright dates
+  * d/rules: override tests to work for vendored dependencies too
+    [Debian no-op]
+  * d/rules: generate lockfile for vendored deps
+    [Debian no-op]
+
+  [ Christian Ehrhardt ]
+  * New upstream version 1.2.0
+  * d/control: adapt dependencies for 1.2.0
+  * d/p/lower-versions-for-unstable.patch: adapt dependencies to Debian archive
+  * Use upstream makefile for installation
+    Upstream maintains a makefile that is generated out of the cargo build.
+    Using that ensures we pick up any future changes more easily.
+    In addition this will
+    - properly install udev rules
+    - add further subdirs of /etc/mdevctl.d
+    - add lsmdev mapping
+    - adds bash completion files
+    - we no more need to maintain .dirs & .install files for the same
+  * d/p/main-binary-already-installed.patch: avoid a vonflict between
+    dh-cargo and the generated upstream makefile
+  * d/p/main-binary-already-installed.patch: also place lsmdev correctly
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 09 Aug 2022 13:24:25 +0200
+
+mdevctl (1.1.0-2) unstable; urgency=medium
+
+  [ Automated Janitor ]
+  * Remove constraints unnecessary since buster
+
+  [ Athos Ribeiro ]
+  * d/control: depend on librust-uuid+rand-dev for v4 (Closes: #1013551)
+  * d/rules: use vendorized dependencies for Ubuntu builds
+    [easens their life, while being a no-op for Debian]
+
+  [ Christian Ehrhardt ]
+  * d/mdevctl.dirs: add /etc/mdevctl.d no more created by upstream
+    (Closes: #1003777)
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 26 Jul 2022 11:11:53 +0200
+
+mdevctl (1.1.0-1) unstable; urgency=medium
+
+  * New upstream version 1.1.0
+    - fixes FTBFS in regard to env_logger (Closes: #998600)
+  * d/control: bump Standards-Version to 4.6.0 (no changes needed)
+  * d/control: use substvars provided by dh-cargo
+  * d/p/lower-versions-for-unstable.patch: update for 1.1.0
+  * d/control: librust-env-logger+default-dev now is new enough
+  * d/p/tempfile-for-tempdir.patch: applied upstream
+  * d/install: install man page
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 09 Nov 2021 14:42:49 +0100
+
+mdevctl (1.0.0-1) unstable; urgency=medium
+
+  * New upstream version 1.0.0
+  * d/control, d/rules: switch to rust build as specified upstream
+  * d/control: lower versioned dependencies to what is available in
+    unstable
+  * d/control: with rust mdevctl is arch:any now
+  * d/cargo-checksum.json: stub for cargo-checksum
+  * d/p/lower-versions-for-unstable.patch: lower required dependency
+    versions to match unstable
+  * d/p/tempfile-for-tempdir.patch: tempfile replaced tempdir
+  * d/control: add tempfile as replacement for the unavailbale tempdir lib
+  * d/control: use librust-serde-json+indexmap-dev to resolve implicit
+    indexmap dependencies
+  * d/control: runtime dependencies not needed for non-libraries
+  * d/control: librust-tempfile-dev only needed for tests, add <!nocheck>
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 14 Jul 2021 12:55:04 +0200
+
+mdevctl (0.81-1) unstable; urgency=medium
+
+  * Merge new upstream 0.81
+    - Fixes combined use of -p and json (Closes: #990535)
+  * d/control: bump to compat level 13 (no changes needed)
+  * d/source/local-options: remove (currently) unused files
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 01 Jul 2021 16:07:15 +0200
+
+mdevctl (0.78-1) unstable; urgency=medium
+
+  * new upstream release 0.78
+    - drop d/p/debianize-paths.patch now being accepted upstream
+    - d/control: bump standards version to 4.5.1 [no changes needed]
+    - d/control, d/compat: Set debhelper-compat version in Build-Depends
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Wed, 25 Nov 2020 08:02:19 +0100
+
+mdevctl (0.69-1) unstable; urgency=medium
+
+  * new upstream release 0.69
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 17 Sep 2020 09:41:13 +0200
+
+mdevctl (0.61-1) unstable; urgency=medium
+
+  * new upstream release 0.61
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 28 Jul 2020 15:43:41 +0200
+
+mdevctl (0.59-1) unstable; urgency=medium
+
+  * new upstream release 0.59
+    The biggest change is the drop of the systemd support in favor of
+    full support of the now fixed udev approach
+    - Drop lsmdev-man-page.patch being accepted upstream
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 10 Dec 2019 11:46:47 +0100
+
+mdevctl (0.50-1) unstable; urgency=low
+
+  * Initial release. Closes: #945230
+    - d/*: initial packaging based on the template out of debmake
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Tue, 26 Nov 2019 12:36:24 +0100

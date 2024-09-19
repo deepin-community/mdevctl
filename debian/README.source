@@ -1,0 +1,3 @@
+`wrap-and-sort -at` is the convention for d/control and other affected
+files to ensure auto-ordering, but with the benefit of having just one
+package per line giving the benefit of more readable diffs.
