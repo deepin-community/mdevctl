@@ -1,4 +1,38 @@
 #!/usr/bin/make -f
+export DH_VERBOSE = 1
+export RUST_BACKTRACE=full
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+include /usr/share/dpkg/vendor.mk
 
 %:
-	dh $@
+	dh $@ --buildsystem cargo
+
+execute_after_dh_auto_configure:
+ifeq ($(DEB_VENDOR),Ubuntu)
+	rm -rf debian/cargo_registry/*
+	for d in vendor/*; do \
+		ln -rs $$d debian/cargo_registry; \
+	done
+	CARGO_HOME=debian /usr/share/cargo/bin/cargo generate-lockfile --offline
+	rm -rf debian/.package-cache
+else
+	rm -rf vendor
+endif
+
+# After being built with cargo this leaves a Makefile around to get everything
+# into the right places. Run that to have files in place
+execute_before_dh_install:
+	make install DESTDIR=debian/mdevctl
+
+override_dh_auto_test:
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+ifeq ($(DEB_VENDOR),Ubuntu)
+	CARGO_HOME=debian /usr/share/cargo/bin/cargo test --offline
+else
+	dh_auto_test -- test
+endif
+endif
+
+execute_after_dh_auto_clean:
+	rm -f mdevctl.spec Makefile

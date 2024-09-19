@@ -1,0 +1,18 @@
+Description: lower required versions
+ Currently unstable does not contain all the required versions.
+ To explore the rest of the rust-switch we lower that for now.
+Forwarded: no
+X-Not-Forwarded-Reason: Currently frozen, but likely available after the release
+Author: Christian Ehrhardt <christian.ehrhardt@canonical.com>
+Last-Update: 2024-02-06
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -14,7 +14,7 @@
+ [dependencies]
+ anyhow = "1.0"
+ clap = { version = "4.0", features = ["derive", "wrap_help"] }
+-env_logger = "0.9.0"
++env_logger = "0.10.0"
+ log = "0.4"
+ serde = { version = "1.0", features = ["derive"] }
+ serde_json = {version = "1.0", features = ["preserve_order"]}
